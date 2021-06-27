@@ -3,9 +3,10 @@ import axios from 'axios';
 
 import postSaga from './post';
 import userSaga from './user';
+import { backURL } from '../address/address';
 
 // 디폴트 URL 설정
-axios.defaults.baseURL = 'http://localhost:3065';
+axios.defaults.baseURL = backURL;
 axios.defaults.withCredentials = true; // front에서도 back와 같이 credentials를 사용하려면 기입해줘야한다.
 
 export default function* rootSaga() {

@@ -4,12 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 // import PropTypes from 'prop-types';
 import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, ADD_POST_REQUEST } from '../reducers/post';
 import useInput from '../hooks/useInput';
+import { backURL } from '../address/address';
 
 const PostForm = () => {
   const { imagesPaths, addPostDone } = useSelector((state) => state.post);
   const [text, onChangeText, setText] = useInput('');
   const dispatch = useDispatch();
- 
 
   useEffect(() => {
     if (addPostDone) {
@@ -18,12 +18,12 @@ const PostForm = () => {
   }, [addPostDone]);
 
   const onSubmit = useCallback(() => {
-    if(!text || !text.trim()){
+    if (!text || !text.trim()) {
       return alert('게시글을 작성하세요.');
     }
     const formData = new FormData();
     imagesPaths.forEach((i) => {
-      formData.append('image',i);
+      formData.append('image', i);
     });
     formData.append('content', text);
     return dispatch({
@@ -46,16 +46,15 @@ const PostForm = () => {
     dispatch({
       type: UPLOAD_IMAGES_REQUEST,
       data: imagesFormData,
-    })
-  },[]);
+    });
+  }, []);
 
   const onRemoveImage = useCallback((index) => () => {
     dispatch({
       type: REMOVE_IMAGE,
       data: index,
-    })
+    });
   });
-
 
   return (
     <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmit}>
@@ -71,13 +70,13 @@ const PostForm = () => {
         <Button type="primary" style={{ float: 'right' }} htmlType="submit">짹쨱</Button>
       </div>
       <div>
-        {imagesPaths && imagesPaths.map((v,i)=>(
-            <div key={v} style={{ display: 'inline-block' }}>
-                <img src={`http://localhost:3065/${v}`} style={{ width: '200px' }} alt={v} />
-                <div>
-                    <Button onClick={onRemoveImage(i)}>제 거</Button>
-                </div>
+        {imagesPaths && imagesPaths.map((v, i) => (
+          <div key={v} style={{ display: 'inline-block' }}>
+            <img src={`${backURL}/${v}`} style={{ width: '200px' }} alt={v} />
+            <div>
+              <Button onClick={onRemoveImage(i)}>제 거</Button>
             </div>
+          </div>
         ))}
       </div>
     </Form>

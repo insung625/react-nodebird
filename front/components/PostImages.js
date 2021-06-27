@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 // import PropTypes from 'prop-types';
 import { PlusOutlined } from '@ant-design/icons';
 import ImagesZoom from './imagesZoom/index';
+import { backURL } from '../address/address';
 
 const PostImages = ({ images }) => {
   const [showImageZoom, setShowImageZoom] = useState(false);
@@ -17,7 +18,7 @@ const PostImages = ({ images }) => {
     // console.log(images[0].content);
     return (
       <>
-        <img role="presentation" src={`http://localhost:3065/${images[0].content}`} alt={images[0].src} onClick={onZoom} />
+        <img role="presentation" src={`${backURL}/${images[0].content}`} alt={images[0].src} onClick={onZoom} />
         {showImageZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
@@ -25,15 +26,15 @@ const PostImages = ({ images }) => {
   if (images.length === 2) {
     return (
       <>
-        <img role="presentation" style={{ width: '50%', display: 'inline-block' }} src={`http://localhost:3065/${images[0].content}`} alt={images[0].src} onClick={onZoom} />
-        <img role="presentation" style={{ width: '50%', display: 'inline-block' }} src={`http://localhost:3065/${images[1].content}`} alt={images[1].src} onClick={onZoom} />
+        <img role="presentation" style={{ width: '50%', display: 'inline-block' }} src={`${backURL}/${images[0].content}`} alt={images[0].src} onClick={onZoom} />
+        <img role="presentation" style={{ width: '50%', display: 'inline-block' }} src={`${backURL}/${images[1].content}`} alt={images[1].src} onClick={onZoom} />
         {showImageZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
   }
   return (
     <>
-      <img role="presentation" style={{ width: '50%', display: 'inline-block' }} src={`http://localhost:3065/${images[0].content}`} alt={images[0].src} onClick={onZoom} />
+      <img role="presentation" style={{ width: '50%', display: 'inline-block' }} src={`${backURL}/${images[0].content}`} alt={images[0].src} onClick={onZoom} />
       <div
         role="presentation"
         style={{ display: 'inline-block', width: '50%', textAlign: 'center', verticalAlign: 'middle' }}
