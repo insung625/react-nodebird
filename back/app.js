@@ -8,6 +8,8 @@ const userRouter = require('./routes/user');
 const postsRouter = require('./routes/posts');
 const hashtagRouter = require('./routes/hashtag');
 const morgan = require('morgan');
+const hpp = require('hpp');
+const helmet = require('helmet');
 const db = require('./models');
 const app = express();
 const passportConfig = require('./passport');
@@ -17,7 +19,7 @@ const path = require('path');
 dotenv.config();
 
 passportConfig();
-app.use(morgan('dev'));
+
 
 //db를 연결
 db.sequelize.sync()
@@ -26,11 +28,21 @@ db.sequelize.sync()
     })
     .catch(console.error);
 
+if (process.env.NODE_ENV === "production"){
+    app.use(morgan('combined'));
+    app.use(hpp());
+    app.use(helmet());
+} else {
+    app.use(morgan('dev'));
+}
+
 //개발시 cors(보안)문제를 쉽게 회피하게 해줌
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000','nodebird.com'],
     credentials: true, //쿠키를 같이 전달하고 싶을때 true
 })); 
+
+
 
 app.use('/', express.static(path.join(__dirname, 'uploads')));
 //front의 데이터 req.body를 전달받는 역할
@@ -79,6 +91,6 @@ app.use('/hashtag',hashtagRouter);
 
 // });
 
-app.listen(3065, ()=>{
+app.listen(80, ()=>{
     console.log('서버 실행 중');
 });
