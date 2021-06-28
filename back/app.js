@@ -32,17 +32,21 @@ if (process.env.NODE_ENV === "production"){
     app.use(morgan('combined'));
     app.use(hpp());
     app.use(helmet());
+    //개발시 cors(보안)문제를 쉽게 회피하게 해줌
+    app.use(cors({
+        origin: ['http://lisf.kr'],
+        credentials: true, //쿠키를 같이 전달하고 싶을때 true
+    })); 
+    
 } else {
     app.use(morgan('dev'));
+    //개발시 cors(보안)문제를 쉽게 회피하게 해줌
+    app.use(cors({
+        origin: true,
+        credentials: true, //쿠키를 같이 전달하고 싶을때 true
+    })); 
+    
 }
-
-//개발시 cors(보안)문제를 쉽게 회피하게 해줌
-app.use(cors({
-    origin: ['http://localhost:3000','www.lisf.kr'],
-    credentials: true, //쿠키를 같이 전달하고 싶을때 true
-})); 
-
-
 
 app.use('/', express.static(path.join(__dirname, 'uploads')));
 //front의 데이터 req.body를 전달받는 역할
