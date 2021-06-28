@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === "production"){
 
 //개발시 cors(보안)문제를 쉽게 회피하게 해줌
 app.use(cors({
-    origin: ['http://localhost:3000','nodebird.com','http://54.180.140.195/'],
+    origin: ['http://localhost:3000','lisf.kr','http://3.34.96.125/'],
     credentials: true, //쿠키를 같이 전달하고 싶을때 true
 })); 
 
