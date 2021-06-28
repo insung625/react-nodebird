@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === "production"){
 
 //개발시 cors(보안)문제를 쉽게 회피하게 해줌
 app.use(cors({
-    origin: ['http://localhost:3000','lisf.kr','http://3.34.96.125/'],
+    origin: ['http://localhost:3000','www.lisf.kr'],
     credentials: true, //쿠키를 같이 전달하고 싶을때 true
 })); 
 
@@ -58,6 +58,11 @@ app.use(session({
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        domain: process.env.NODE_ENV === 'production' && '.lisf.kr'
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session()); 
