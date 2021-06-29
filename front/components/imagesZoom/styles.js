@@ -64,7 +64,7 @@ text-align: center;
     font-size: 15px;
 }
 
-`; 
+`;
 
 export const Global = createGlobalStyle`
 .slick-slide{

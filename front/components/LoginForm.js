@@ -20,11 +20,11 @@ const LoginForm = () => {
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
 
-  useEffect(()=> {
-    if(logInError){
-      alert(logInError)
+  useEffect(() => {
+    if (logInError) {
+      alert(logInError);
     }
-  },[logInError]);
+  }, [logInError]);
 
   const onSubmitForm = useCallback(() => {
     console.log(email, password);

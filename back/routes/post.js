@@ -4,6 +4,8 @@ const { isLoggedIn } = require('./middlewares');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const AWS = require('aws-sdk');
+const multerS3 = require('multer-s3');
 
 const router = express.Router();
 
@@ -16,17 +18,31 @@ try {
 
 //이미지 업로드 미들웨어
 //이미지를 PC에 저장
+//기존 하드웨어에서 저장하는것에서 AWS의 S3에 저장하는것으로 변경
+AWS.config.update({
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    region: 'ap-northeast-2',
+}); 
+
 const upload = multer({
     //하드디스크에 저장
-    storage: multer.diskStorage({
-        destination(req, file, done) {
-            done(null, 'uploads');
-        },
-        filename(req, file, done) {
-            const ext = path.extname(file.originalname); // 확장자 추출(.png)
-            const basename = path.basename(file.originalname, ext); // 
-            done(null, basename + '_' + new Date().getTime() + ext);
-        },
+    // storage: multer.diskStorage({
+    //     destination(req, file, done) {
+    //         done(null, 'uploads');
+    //     },
+    //     filename(req, file, done) {
+    //         const ext = path.extname(file.originalname); // 확장자 추출(.png)
+    //         const basename = path.basename(file.originalname, ext); // 
+    //         done(null, basename + '_' + new Date().getTime() + ext);
+    //     },
+    // }),
+    storage: multerS3({
+        s3: new AWS.S3(),
+        bucket: 'react-nodebird-lis',
+        key(req, file, cb) {
+            cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
+        }
     }),
     limits: { filesize: 20 * 1024 * 1024 }, //20MB
 });
@@ -94,7 +110,7 @@ router.post('/', isLoggedIn, upload.none(), async (req,res, next ) => {
 router.post('/images', isLoggedIn, upload.array('image'), async (req, res, next) => {
     try {
         // console.log(req.files);
-        res.json(req.files.map((v)=>v.filename));
+        res.json(req.files.map((v)=>v.location));
     } catch (err) {
         console.error(err);
         next(err);

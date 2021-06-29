@@ -85,7 +85,6 @@ export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
 
-
 export const loginRequestAction = (data) => ({
   type: LOG_IN_REQUEST,
   data,
@@ -94,7 +93,6 @@ export const loginRequestAction = (data) => ({
 export const logoutRequestAction = () => ({
   type: LOG_OUT_REQUEST,
 });
-
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
@@ -168,7 +166,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.unfollowDone = true;
       draft.unfollowError = null;
       draft.unfollowLoading = false;
-      draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data.id );
+      draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data.id);
       break;
     case UNFOLLOW_FAILURE:
       draft.unfollowLoading = false;
